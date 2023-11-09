@@ -68,11 +68,13 @@ void ReadFile(string fileName)
         while (getline(file, line)) {
             stringstream ss(line);
             string left, right;
-            char comma;
+
+            const char op = '(';
+            const char cp = ')';
 
             if (getline(ss, left, ',') && getline(ss, right)) {
-                left.erase(remove(left.begin(), left.end(), '('));
-                right.erase(remove(right.begin(), right.end(), ')'));
+                left.erase(std::remove(left.begin(), left.end(), op), left.end());
+                right.erase(std::remove(right.begin(), right.end(), cp), right.end());
                 column1.push_back(left);
                 column2.push_back(right);
             }
