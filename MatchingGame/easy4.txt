@@ -1,0 +1,4 @@
+(ab,a)
+(bbaaba,a)
+(b,bbbb)
+(bb,ab)

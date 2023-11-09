@@ -1,0 +1,4 @@
+(bab,a)
+(a,aba)
+(ab,b)
+(ba,b)
