@@ -3,7 +3,8 @@
 #include <string>
 #include <tuple>
 #include <queue>
-#include <set>
+#include <unordered_set>
+#include "State.cpp"
 
 using namespace std;
 
@@ -19,7 +20,7 @@ private:
         string t;
     };
     bool Acceptable(const Candidate& candidate, const int& maxDifference);
-    bool DejaVu(const Candidate& candidate, set<tuple<int, string>>& seenSituations);
+    bool DejaVu(const Candidate& candidate, unordered_set<State, State::HashFunction>& seenSituations);
     bool Complete(const Candidate& solution);
 
     vector<string> column1;

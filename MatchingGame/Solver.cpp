@@ -23,7 +23,7 @@ Solver::Solver(const vector<string>& col1, const vector<string>& col2)
 vector<int> Solver::Solve(const int maxDifference) {
 
     queue<Candidate> candidatesQueue;
-    set<tuple<int, string>> seenSituations;
+    unordered_set<State, State::HashFunction> seenSituations;
 
     // Fill with initial candidates
     for (int i = 0; i < column1.size(); i++) {
@@ -109,13 +109,13 @@ bool Solver::Acceptable(const Candidate& candidate, const int& maxDifference) {
 /// <summary>
 /// Checks if the candidate is in a situation that has been analyzed before.
 /// For example:
-/// Case 1: (s1 = AAB, t1 = A)
-/// Case 2: (s2 = abbaAAB, t2 = abbA)
-/// There's no need to recheck Case 2 because any state it can reach has already been covered by Case 1.
-/// In other words, Case 2 is a déjà vu of Case 1; we reject it.
+/// State 1: (s1 = AAB, t1 = A)
+/// State 2: (s2 = abbAAB, t2 = abbA)
+/// There's no need to recheck State 2 because any state it can reach has already been covered by State 1.
+/// In other words, State 2 is a déjà vu of State 1; we reject it.
 /// </summary>
 /// <returns>True if it's a déjà vu (a previously seen situation), false otherwise.</returns>
-bool Solver::DejaVu(const Candidate& candidate, set<tuple<int, string>>& seenSituations) {
+bool Solver::DejaVu(const Candidate& candidate, unordered_set<State, State::HashFunction>& seenSituations) {
     const string& s = candidate.s;
     const string& t = candidate.t;
     // Calculate the difference between s and t
@@ -129,7 +129,7 @@ bool Solver::DejaVu(const Candidate& candidate, set<tuple<int, string>>& seenSit
     else
         difference = t.substr(s.size() - 1, t.size() - s.size() + 1);
 
-    tuple<int, string> currentSituation = make_tuple(lengthDifference, difference);
+    State currentSituation = State(lengthDifference, difference);
     // Have we seen this situation before?
     bool dejavu = seenSituations.find(currentSituation) != seenSituations.end();
     // If the situation is new, store it
